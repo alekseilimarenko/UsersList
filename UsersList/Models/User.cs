@@ -8,7 +8,7 @@ namespace UsersList.Models
         public int UserId { get; set; }
 
         [Required(ErrorMessage = "Введите Ваше имя")]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Неправильны формат имени")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Неправильный формат имени")]
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Длина строки должна быть от 6 до 50 символов")]
         [Display(Name = "Имя")]
         public string UserName { get; set; }

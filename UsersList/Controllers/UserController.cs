@@ -20,17 +20,16 @@ namespace UsersList.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Add(User user, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
-                if (image != null)
-                {
-                    user.ImageMimeType = image.ContentType;
-                    user.UserAvatar = new byte[image.ContentLength];
-                    image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
-                }
+                //if (image != null)
+                //{
+                //    user.ImageMimeType = image.ContentType;
+                //    user.UserAvatar = new byte[image.ContentLength];
+                //    image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
+                //}
                 Utils.UtilsUser.UpdateUserByModelFronWeb(_db, ref user);
                 //return RedirectToAction("Index");
             }
@@ -38,7 +37,7 @@ namespace UsersList.Controllers
             //{
             //    return View(user);
             //}
-            return View(user);
+            return Json(new { res = true});
         }
 
         public FileContentResult GetImage(int userId)
