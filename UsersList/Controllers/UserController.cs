@@ -24,19 +24,14 @@ namespace UsersList.Controllers
         {
             if (ModelState.IsValid)
             {
-                //if (image != null)
-                //{
-                //    user.ImageMimeType = image.ContentType;
-                //    user.UserAvatar = new byte[image.ContentLength];
-                //    image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
-                //}
+                if (image != null)
+                {
+                    user.ImageMimeType = image.ContentType;
+                    user.UserAvatar = new byte[image.ContentLength];
+                    image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
+                }
                 Utils.UtilsUser.UpdateUserByModelFronWeb(_db, ref user);
-                //return RedirectToAction("Index");
             }
-            //else
-            //{
-            //    return View(user);
-            //}
             return Json(new { res = true});
         }
 
