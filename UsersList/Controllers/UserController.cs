@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using UsersList.Models;
@@ -9,50 +7,49 @@ namespace UsersList.Controllers
 {
     public class UserController : Controller
     {
-        UserContext db = new UserContext();
+        private readonly UserContext _db = new UserContext();
 
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(_db.Users.ToList());
         }
 
         public ActionResult Add(int? userId)
         {
-            return View(userId != null ? db.Users.Find(userId) : null);
+            return View(userId != null ? _db.Users.Find(userId) : null);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(string userId, HttpPostedFileBase image)
+        public ActionResult Add(User user, HttpPostedFileBase image)
         {
-            if (ModelState.IsValid && user != null)
+            if (ModelState.IsValid)
             {
-                var user = userId != null ? db.Users.Find(userId) : null;
-
-                if (user != null && image != null)
+                if (image != null)
                 {
                     user.ImageMimeType = image.ContentType;
                     user.UserAvatar = new byte[image.ContentLength];
                     image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
                 }
-                Utils.SaveData.SaveUser(db, user);
-                return RedirectToAction("Index");
+                Utils.UtilsUser.UpdateUserByModelFronWeb(_db, ref user);
+                //return RedirectToAction("Index");
             }
-            else
-            {
-                return View(user);
-            }
+            //else
+            //{
+            //    return View(user);
+            //}
+            return View(user);
         }
 
         public FileContentResult GetImage(int userId)
         {
-            User userImage = db.Users.FirstOrDefault(p => p.UserId == userId);
+            User userImage = _db.Users.FirstOrDefault(p => p.UserId == userId);
             return userImage != null ? File(userImage.UserAvatar, userImage.ImageMimeType) : null;
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
     }
