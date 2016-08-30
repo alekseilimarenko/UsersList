@@ -35,6 +35,25 @@ namespace UsersList.Controllers
             return Json(new { res = true});
         }
 
+        [HttpPost]
+        public ActionResult AddImage(HttpPostedFileBase image)
+        {
+            //var user = _db.Users.Find(userId);
+
+            if (ModelState.IsValid)
+            {
+            //    if (image != null)
+            //    {
+            //        user.ImageMimeType = image.ContentType;
+            //        user.UserAvatar = new byte[image.ContentLength];
+            //        image.InputStream.Read(user.UserAvatar, 0, image.ContentLength);
+            //    }
+            //    Utils.UtilsUser.UpdateUserByModelFronWeb(_db, ref user);
+            }
+            return Json(new { res = true });
+        }
+
+
         public FileContentResult GetImage(int userId)
         {
             User userImage = _db.Users.FirstOrDefault(p => p.UserId == userId);
