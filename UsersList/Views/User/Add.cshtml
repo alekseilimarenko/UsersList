@@ -70,37 +70,63 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script type="text/javascript">
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#addForm').on("change", function(e) {
-                var file = document.getElementById("fileInput").files[0];
-
-                var user = {
-                    UserId: document.getElementById('userId').value,
-                    UserName: document.getElementById('userName').value,
-                    UserEmail: document.getElementById('userEmail').value,
-                    SkypeLogin: document.getElementById('skypeLogin').value,
-                    Signature: document.getElementById('signature').value
-                };
-               
-                var formData = new FormData();
-                formData.append("user", user);
-                formData.append("image", file);
-                
-                console.log(user.Signature);
                 e.preventDefault();
-                    $.ajax({
-                        url: '/User/Add/',
-                        type: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
+                console.log("ok");
+                var fileUpload = $("#fileInput").get(0).files;
+
+                var userId = document.getElementById('userId').value;
+                var userName = document.getElementById('userName').value;
+                var userEmail = document.getElementById('userEmail').value;
+                var skypeLogin = document.getElementById('skypeLogin').value;
+                var signature = document.getElementById('signature').value;
+
+                if (userName == "" || userEmail == "") {
+                    alert("заполните поля имя и адрес");
+                    return;
+                }
+
+                var formData = new FormData();
+                formData.append("userId", userId);
+                formData.append("userName", userName);
+                formData.append("userEmail", userEmail);
+                formData.append("skypeLogin", skypeLogin);
+                formData.append("signature", signature);
+
+                if (fileUpload.length > 0) {
+                    formData.append("userAvatar", fileUpload[0]);
+                }
+                console.log("ok2");
+
+                //console.log("user.Signature = " + user.Signature);
+                    //$.ajax({
+                    //    url: '/User/Add/',
+                    //    type: 'POST',
+                    //    data: JSON.stringify(user),
+                    //    datatype: "json",
+                    //    contentType: "application/json; charset=utf-8",
+                    //    //processData: false,
+                    //success: function(data) {
+                    //    //alert('данные отправлены');
+                    //},
+                    //error: function(xhr, errmsg, err) {
+                    //    //alert('При обращении к серверу произошла ошибка');
+                    //}
+                //});
+                $.ajax({
+                    url: '/User/Add/',
+                    type: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
                     success: function(data) {
-                        debugger;
                     },
-                    error: function(xhr, errmsg, err) {
-                        //alert('При обращении к серверу произошла ошибка');
+                    error: function(resp) {
+                        //alert(resp);
                     }
                 });
+                console.log("ok3");
             });
         });
 
